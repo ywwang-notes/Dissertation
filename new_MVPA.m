@@ -1,4 +1,4 @@
-t_path = '/Users/yi-wenwang/Documents/Work/Analysis/0003/GLM1s10STN/';
+t_path = '/Users/yi-wenwang/Documents/Work/Analysis/2526/G1STN/';
 % v_name = 'VOI_L_PrG_all_s_';
 % [data1 label1] = load_data(t_path, v_name, 1);
 % [data2 label2] = load_data(t_path, v_name, 2);

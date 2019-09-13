@@ -53,8 +53,8 @@ th = min(max([rA rB rC rD])) * 0.6
 % set1 = find((rA > th) | (rD > th)); 
 % set2 = find((rC > th) | (rB > th)); 
 
-set1 = find(rB > th); 
-set2 = find(rD > th); 
+set1 = find(rA > th); 
+set2 = find(rC > th); 
 
 to_remove = intersect(set1, set2);
 if length(to_remove) > 0

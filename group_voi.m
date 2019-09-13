@@ -1,18 +1,27 @@
-upperdir = '/Users/yi-wenwang/Documents/Work/Analysis/'; % revise here
-
-% sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
-%     1710 1886 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
-%     3034 3080 3149 3431 3461 3552 3883 3973 4087 4298 4320 4599 4765 4958];
+% addpath '/Users/yi-wenwang/Documents/Matlab/spm12';
 v_name = 'STN_uf_';
-mask_name = 'mask_STN.nii';
+subfolder = '/G1STN/';
+mask_file = [subfolder 'mask.nii']; % in G1STN folder
+SPM_file = [subfolder 'SPM.mat'];
 
-sidlst = [0001];
+sidlst = spm_select(Inf,'dir','Select subject directories',[],pwd);;
+[r, c] = size(sidlst);
 
-for sbj=1:length(sidlst)
-    s_path = [upperdir num2str(sidlst(sbj), '%04i') '/'];
-    load([s_path 'SPM.mat']);
-    mask = [s_path 'ROI/' mask_name];
+for sbj=1:r
+    s_path = sidlst(sbj,:);
+    s_path = s_path(~isspace(s_path));
+    mask = [s_path mask_file];
+    s_spm = [s_path SPM_file];
 
+    if ~exist(mask) | ~exist(s_spm)
+        disp('at least one of the following files not found:');
+        disp(mask);
+        disp(s_spm);
+        continue;
+    end
+        
+    load(s_spm);
+    
     start = 0;
     last = 0;
     
@@ -20,11 +29,11 @@ for sbj=1:length(sidlst)
         start = last + 1;
         last = last + SPM.nscan(b);
         data = SPM.xY.P(start:last, :);
-        [Ym R info] = extract_voxel_values(mask, SPM, []); 
+        [Ym R info] = extract_voxel_values(mask, data, []); 
         
-        filename = [s_path v_name num2str(b) '.mat'];
+        filename = [s_path subfolder v_name num2str(b) '.mat'];
         save(filename);
-        disp(filename);
+        disp(sprintf('%s contains %i voxels.', filename, length(R.I(1).xyz)));
         clear Ym R info;
     end
     clear SPM;
