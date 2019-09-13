@@ -43,7 +43,14 @@ do
 #		cd ..
 
 # for copy data from or to mini
-#		target=$(ls $1 | grep ^[0-9].*$folder)
+		target=$(ls $1 | grep ^[0-9].*$folder)
+		if [ ! -z $target ]; then
+			files=$(ls $1/$target/G1STN/ | grep STN.*mat)
+			if [ ! -z "$files" ]; then
+				cp -v $1/$target/G1STN/STN*.mat $folder/G1STN
+			fi
+		fi
+
 #		if [ ! -z "$target" ] && [ -d "$1/$target/G1STN" ]; then
 #		if [ ! -z "$target" ]; then
 #			cp -av "$1/$target/G1STN" $folder
@@ -52,9 +59,9 @@ do
 #			echo $target
 #		fi
 
-		if [ -d "$folder/GLM1_STN" ]; then
-			mv $folder/GLM1_STN $folder/G1STN
-		fi
+#		if [ -d "$folder/GLM1_STN" ]; then
+#			mv $folder/GLM1_STN $folder/G1STN
+#		fi
 
 # for looking for empty folders
 #		target=$(ls $folder | grep GLM2)
