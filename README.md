@@ -4,7 +4,7 @@
 1. DICOM2NIFTI, distortion correction and motion correction (`u*.m`), smooth (`s*.m`)
 1. 1st level GLM (`Gx_y`; also need: `create_mat`, `eMask`)
 1. Warp structural images to MNI152, warp con files to MNI152, 2nd level GLM
-1. Warp atlas to individual mean image (`group_roi`, `inv_normalise`), MVPA (construct F, extract time series)
+1. Warp atlas to individual mean image (`group_roi`, `inv_normalise`), MVPA
 
 ## for SPM.mat
 `build_con` loop thru subjects and build basic contrasts (beta - 0) based on spmT.mat  
