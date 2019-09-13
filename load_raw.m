@@ -1,10 +1,18 @@
-function [data, label] = load_data(targetpath, voi_name, sess)
+function [data, label, n1, n2, overlap] = load_data(targetpath, voi_name, sess)
 % raw: R.I from extract_voxel_values
 
 data = [];
 label = [];
+n1 = 0;
+n2 = 0;
+overlap = 0;
 
-load([targetpath voi_name num2str(sess) '.mat']);
+v_file = [targetpath voi_name num2str(sess) '.mat'];
+if ~exist(v_file)
+    return;
+end
+
+load(v_file);
 
 % convert R.I.Ya to xY.y
 nT = length(R.I);
@@ -45,7 +53,6 @@ rB = SPM.xX.X(start_TR:end_TR, b_rB(sess));
 rC = SPM.xX.X(start_TR:end_TR, b_rC(sess));
 rD = SPM.xX.X(start_TR:end_TR, b_rD(sess));
 
-
 th = min(max([rA rB rC rD])) * 0.6
 
 % extract best TRs for training
@@ -54,7 +61,7 @@ th = min(max([rA rB rC rD])) * 0.6
 % set2 = find((rC > th) | (rB > th)); 
 
 set1 = find(rA > th); 
-set2 = find(rC > th); 
+set2 = find(rD > th); 
 
 to_remove = intersect(set1, set2);
 if length(to_remove) > 0
@@ -74,8 +81,12 @@ end
 % set3 = find(rC > th);
 % set4 = find(rD > th);
 
+n1 = length(set1);
+n2 = length(set2);
+overlap = length(to_remove);
+
 sprintf('(session %i) set1: %i; set2: %i; %i TRs excluded', ...
-    sess, length(set1), length(set2), length(to_remove))
+    sess, n1, n2, overlap)
 data = xY.y([set1' set2'],:);
 
 % normalize columns of data -- doesn't seem to affect anything

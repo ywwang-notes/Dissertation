@@ -1,4 +1,4 @@
-t_path = '/Users/yi-wenwang/Documents/Work/Analysis/2526/G1STN/';
+t_path = '/Users/yi-wenwang/Documents/Work/Analysis/0003/G1STN/';
 % v_name = 'VOI_L_PrG_all_s_';
 % [data1 label1] = load_data(t_path, v_name, 1);
 % [data2 label2] = load_data(t_path, v_name, 2);
@@ -7,8 +7,8 @@ v_name = 'STN_uf_';
 % STN_uf works better for switch vs. stay
 % STN_suf works better for cat1 vs. cat2
 
-[data1 label1] = load_raw(t_path, v_name, 1);
-% [data2 label2] = load_raw(t_path, v_name, 2);
+[data1, label1, ~, ~, ~] = load_raw(t_path, v_name, 1);
+% [data2, label2, ~, ~, ~] = load_raw(t_path, v_name, 2);
 
 % cross sessions
 % normalize columns of data: doesn't seem to have any effect
