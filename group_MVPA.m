@@ -1,8 +1,9 @@
 % revised from new_MVPA.m
 events = {'s11', 's12', 's21', 's22'};
-e1 = 1; e2 = 4; % which two events?
+e1 = 2; e2 = 4; % which two events?
 v_name = 'STN_uf_';
 Nfolds = 10;
+TestSize = 7;
 fid = fopen([v_name events{e1} events{e2} 'n.txt'], 'w'); % n means normalized (standardized)
 fprintf(fid, 'sid sess Nfolds corr sens spec n overlap\n');
 
@@ -30,7 +31,7 @@ for s = 1:length(sidlst)
         
         % pick data: keep data for each level of equal length
         idx = 1;
-        min_len = min(n);
+        min_len = min(n([e1 e2]));
         pick = [];
         for i = 1:length(n)
             temp = idx:(idx+n(i)-1); 
@@ -45,7 +46,7 @@ for s = 1:length(sidlst)
         data = series(pick, :);
         
         % be sure that each label have equal amount asigned to runs
-        if min_len < 5 * Nfolds
+        if min_len < TestSize * Nfolds
             continue; % not enough data; skip this block
         end
         
