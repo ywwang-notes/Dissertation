@@ -66,7 +66,7 @@ set2 = find(rD > th);
 to_remove = intersect(set1, set2);
 if length(to_remove) > 0
     set1(ismember(set1, to_remove)) = [];
-    set2(ismember(set1, to_remove)) = [];
+    set2(ismember(set2, to_remove)) = [];
 end
 
 % set1 = find(rA > th); 

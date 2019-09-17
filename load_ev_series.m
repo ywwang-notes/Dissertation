@@ -1,4 +1,4 @@
-function [data, label, n, overlap] = load_raw(events, targetpath, voi_name, sess)
+function [data, label, n, overlap] = load_raw(events, targetpath, voi_name, sess, stdiz)
 % raw: R.I from extract_voxel_values
 
 data = [];
@@ -27,10 +27,13 @@ for i=1:nV
     [xY.y(:,i), ~] = detrend(xY.y(:,i), 2);
 end
 
-% normalize (it seems to harm the performance)
-% for i=1:nV
-%     xY.y(:,i) = (xY.y(:,i) - mean(xY.y(:,i))) / norm(xY.y(:,i));
-% end % normalize columns of data
+% standardize (it seems to harm the performance)
+if stdiz
+    for i=1:nV
+        % xY.y: row for each TR, col for each voxel
+        xY.y(:,i) = (xY.y(:,i) - mean(xY.y(:,i))) / norm(xY.y(:,i));
+    end % standardize across TRs
+end
 
 load([targetpath 'SPM.mat']);
 
