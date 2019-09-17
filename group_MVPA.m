@@ -4,7 +4,7 @@ e1 = 1; e2 = 4; % which two events?
 v_name = 'STN_uf_';
 Nfolds = 10;
 fid = fopen([v_name events{e1} events{e2} 'n.txt'], 'w'); % n means normalized (standardized)
-fprintf(fid, 'sid sess Nfolds corr sens spec set1 set2 overlap\n');
+fprintf(fid, 'sid sess Nfolds corr sens spec n overlap\n');
 
 sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
     1710 1886 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
@@ -28,17 +28,34 @@ for s = 1:length(sidlst)
             break;
         end
         
-        % pick data
-        idx = [1];
+        % pick data: keep data for each level of equal length
+        idx = 1;
+        min_len = min(n);
+        pick = [];
         for i = 1:length(n)
-            idx = [idx sum(n(1:i))+1]; % add start TR of the (i+1)th event
+            temp = idx:(idx+n(i)-1); 
+            if i == e1 | i == e2
+                temp = temp(randperm(length(temp)));
+                pick = [pick temp(1:min_len)];
+            end
+            idx = idx + n(i);% for start of next label
         end
-        
-        pick = [(idx(e1):idx(e1+1)-1) (idx(e2):idx(e2+1)-1)];
-        
+
         CorrectLabels = label(pick);
         data = series(pick, :);
-        indices = crossvalind('Kfold', size(data,1), Nfolds);
+        
+        % be sure that each label have equal amount asigned to runs
+        if min_len < 5 * Nfolds
+            continue; % not enough data; skip this block
+        end
+        
+        indices = [];
+        for i=1:max(label)
+            if i == e1 | i == e2
+                indices = [indices crossvalind('Kfold', min_len, Nfolds)'];
+            end
+        end
+        
         cp = classperf(CorrectLabels); 
         
         for i = 1:Nfolds
@@ -50,10 +67,10 @@ for s = 1:length(sidlst)
         cp
         
         % sid sess Nfolds corr sens spec set1 set2 overlap
-        fprintf(fid, "%04i %i %i %.4f %.4f %.4f %i %i %i\n", ...
+        fprintf(fid, "%04i %i %i %.4f %.4f %.4f %i %i\n", ...
             sidlst(s), b, Nfolds, ... 
             cp.CorrectRate, cp.Sensitivity, cp.Specificity, ...
-            n(1), n(3), overlap);
+            min_len, overlap);
         clear data label CorrectLabels indices cp svmStruct classes
     end % for sessions
     
