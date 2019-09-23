@@ -1,5 +1,6 @@
-function [data, label, n, overlap] = load_raw(events, targetpath, voi_name, sess, stdiz)
+function [data, label, n, overlap] = load_ev_series(events, targetpath, voi_name, sess, stdiz)
 % raw: R.I from extract_voxel_values
+% the .mat file should be from group_voi (extracted from raw images)
 
 data = [];
 label = [];
@@ -22,17 +23,19 @@ end
 
 [nT nV] = size(xY.y);
 
-% detrend (degree=2 works the best)
-for i=1:nV
-    [xY.y(:,i), ~] = detrend(xY.y(:,i), 2);
-end
-
-% standardize (it seems to harm the performance)
 if stdiz
-    for i=1:nV
+    for i=1:nT
         % xY.y: row for each TR, col for each voxel
-        xY.y(:,i) = (xY.y(:,i) - mean(xY.y(:,i))) / norm(xY.y(:,i));
-    end % standardize across TRs
+        xY.y(i,:) = xY.y(i,:) - mean(xY.y(i,:)); % centered to zero
+        xY.y(i,:) = xY.y(i,:) / norm(xY.y(i,:)); % normalized to unit L2 norm
+    end % standardize to L2 norm for each observation (ROI-wise)
+%     xY.y = zscore(xY.y, 0, 2);
+else
+% detrend (degree=2 works the best)
+% detrend is not necessary if data are to be standardized    
+    for i=1:nV
+        [xY.y(:,i), ~] = detrend(xY.y(:,i), 2);
+    end
 end
 
 load([targetpath 'SPM.mat']);
