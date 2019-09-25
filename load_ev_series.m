@@ -70,6 +70,7 @@ end
 % remove overlaps; pair-wise comparisons
 pairs = [1 2; 1 3; 1 4; 2 3; 2 4; 3 4];
 [r, c] = size(pairs);
+overlap = 0;
 
 for i=1:r
     p1 = pairs(i, 1);
@@ -85,6 +86,7 @@ end
 
 [r, c] = size(TRs);
 data = [];
+label = [];
 n = [];
 for i=1:c % i for each beta
 % xY.y: row for each TR, col for each voxel
