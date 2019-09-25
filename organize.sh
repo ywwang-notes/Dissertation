@@ -43,20 +43,24 @@ do
 #		cd ..
 
 # for copy data from or to mini
+#		mkdir $1/MVPA/$folder
+#		cp -v $folder/G1STN/STN* $1/MVPA/$folder
+
 		target=$(ls $1 | grep ^[0-9].*$folder)
 		if [ ! -z $target ]; then
-			files=$(ls $1/$target/G1STN/ | grep STN.*mat)
+			files=$(ls $1/$target/GLM3/ | grep V1.*mat)
 			if [ ! -z "$files" ]; then
-				cp -v $1/$target/G1STN/STN*.mat $folder/G1STN
+				cp -v $1/$target/GLM3/V1*.mat $folder/GLM
+				cp -v $1/$target/GLM3/V1*.mat $folder/GLM3
 			fi
 		fi
 
-#		if [ ! -z "$target" ] && [ -d "$1/$target/G1STN" ]; then
+#		if [ ! -z "$target" ] && [ -d "$1/$target/GLM3" ]; then
 #		if [ ! -z "$target" ]; then
 #			cp -av "$1/$target/G1STN" $folder
 #			mkdir "$1/$target/GLM3"
-#			cp "$folder/ROI/mask_STN.nii" "$1/$target/"
-#			echo $target
+#			cp -v group_voi.m "$1/"
+#			cp -v "$folder/ROI/mask_V1.nii" "$1/$target/"
 #		fi
 
 #		if [ -d "$folder/GLM1_STN" ]; then
