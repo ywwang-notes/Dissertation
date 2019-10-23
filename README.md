@@ -19,6 +19,9 @@ group_4D
 ## Bash
 `myren.sh` rename files in a folder by replacing substring1 with substring2; need to add path of it before use
 
+## Reference
+[atlas.md](https://github.com/ywwang-notes/Analysis/blob/master/atlas.md)
+
 ## Keep a record of what I consulted
 * [extract time series](https://en.wikibooks.org/wiki/SPM/Timeseries_extraction)
 
