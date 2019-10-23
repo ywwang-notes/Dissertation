@@ -2,7 +2,7 @@
 events = {'s11', 's12', 's21', 's22'};
 e1 = 1; e2 = 4; % which two events for training?
 v1 = 3; v2 = 2; % which two events for verification?
-v_name = 'STN_uf_';
+v_name = 'SMC_suf_';
 TrainSize = 70;
 fid = fopen([v_name events{e1} events{e2} 'x' events{v1} events{v2} '.txt'], 'w'); 
 fprintf(fid, 'sid sess corr sens spec train_n test_n overlap\n');
@@ -17,7 +17,7 @@ stdiz = true;
 
 for s = 1:length(sidlst)
     
-    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/G1STN/', sidlst(s));
+    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM/', sidlst(s));
     
     if ~exist(t_path)
         disp(sprintf('%s does not exist', t_path));

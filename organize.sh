@@ -43,26 +43,28 @@ do
 #		cd ..
 
 # for copy data from or to mini
+# -----
 #		mkdir $1/MVPA/$folder
 #		cp -v $folder/G1STN/STN* $1/MVPA/$folder
-
+# -----
 		target=$(ls $1 | grep ^[0-9].*$folder)
+# -----
 		if [ ! -z $target ]; then
-			files=$(ls $1/$target/GLM3/ | grep V1.*mat)
+			files=$(ls $1/$target/GLM3/ | grep SMC.*mat)
 			if [ ! -z "$files" ]; then
-				cp -v $1/$target/GLM3/V1*.mat $folder/GLM
-				cp -v $1/$target/GLM3/V1*.mat $folder/GLM3
+				cp -v $1/$target/GLM3/SMC*.mat $folder/GLM
+				cp -v $1/$target/GLM3/SMC*.mat $folder/GLM3
 			fi
 		fi
-
+# -----
 #		if [ ! -z "$target" ] && [ -d "$1/$target/GLM3" ]; then
-#		if [ ! -z "$target" ]; then
+		if [ ! -z "$target" ]; then
 #			cp -av "$1/$target/G1STN" $folder
 #			mkdir "$1/$target/GLM3"
 #			cp -v group_voi.m "$1/"
-#			cp -v "$folder/ROI/mask_V1.nii" "$1/$target/"
-#		fi
-
+			cp -v "$folder/ROI/mask_SMC.nii" "$1/$target/"
+		fi
+# -----
 #		if [ -d "$folder/GLM1_STN" ]; then
 #			mv $folder/GLM1_STN $folder/G1STN
 #		fi
@@ -73,6 +75,16 @@ do
 #			echo $folder
 #		fi
 #
-	fi
+#
+
+# for rename
+#		for oldname in $(ls $folder/GLM3 | grep _uf); do
+#    			newname=${oldname/_uf/_suf}
+#    			mv -v $folder/GLM3/$oldname $folder/GLM3/$newname
+#			mv -v $folder/GLM/$oldname $folder/GLM/$newname
+#		done
+
+	fi # loop thru subject folders
+
 
 done

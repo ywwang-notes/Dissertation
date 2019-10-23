@@ -1,10 +1,12 @@
-% addpath '/Users/yi-wenwang/Documents/Matlab/spm12';
+clear all
+addpath '/Users/yi-wenwang/Documents/Matlab/spm12';
+
 % v_name = 'STN_uf_';
 % subfolder = '/G1STN/';
 % mask_file = [subfolder 'mask.nii']; % in G1STN folder
 % SPM_file = [subfolder 'SPM.mat'];
 
-v_name = 'V1_uf_';
+v_name = 'V1_suf_';
 mask_dir = '/ROI/';
 spm_dir = '/GLM3/';
 mask_file = [mask_dir 'mask_V1.nii']; % in G1STN folder
@@ -38,7 +40,7 @@ for sbj=1:r
         [Ym R info] = extract_voxel_values(mask, data, []); 
         
         filename = [s_path spm_dir v_name num2str(b) '.mat'];
-        save(filename);
+        save(filename, 'Ym', 'R', 'info');
         disp(sprintf('%s contains %i voxels.', filename, length(R.I(1).xyz)));
         clear Ym R info;
     end

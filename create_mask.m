@@ -17,15 +17,14 @@ for sbj=1:length(sidlst)
     % and change run_n based on your design
 
     matlabbatch{sbj}.spm.util.imcalc.input = {
-                                        [to_path 'rwV1v_L.nii,1']
-                                        [to_path 'rwV1v_R.nii,1']
-                                        [to_path 'rwV1d_L.nii,1']
-                                        [to_path 'rwV1d_R.nii,1']
+                                        [to_path 'rwL_SMC.nii,1']
+                                        [to_path 'rwR_SMC.nii,1']
                                         [spm_path 'mask.nii,1']
                                         };
-    matlabbatch{sbj}.spm.util.imcalc.output = 'mask_V1';
+    matlabbatch{sbj}.spm.util.imcalc.output = 'mask_SMC';
     matlabbatch{sbj}.spm.util.imcalc.outdir = {to_path};
-    matlabbatch{sbj}.spm.util.imcalc.expression = '((i1 > 5) | (i2 > 5) | (i3 > 5) | (i4 > 5)) .* i5';
+%    matlabbatch{sbj}.spm.util.imcalc.expression = '((i1 > 5) | (i2 > 5) | (i3 > 5) | (i4 > 5) | (i5 > 5) | (i6 > 5)) .* i7';
+    matlabbatch{sbj}.spm.util.imcalc.expression = '((i1 > 0.5) | (i2 > 0.5)) .* i3';
     matlabbatch{sbj}.spm.util.imcalc.var = struct('name', {}, 'value', {});
     matlabbatch{sbj}.spm.util.imcalc.options.dmtx = 0;
     matlabbatch{sbj}.spm.util.imcalc.options.mask = 0;

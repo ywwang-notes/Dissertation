@@ -1,19 +1,21 @@
 events = {'s11', 's12', 's21', 's22'};
-e1 = 1; e2 = 3; % which two events?
-v_name = 'STN_uf_';
+e1 = 1; e2 = 4; % which two events?
+v_name = 'SMC_suf_';
 Nfolds = 10;
 TestSize = 7;
-fid = fopen([v_name events{e1} events{e2} '.txt'], 'w'); % n: normalized (standardized); p: polynomial
+fid = fopen([v_name events{e1} events{e2} '.txt'], 'w'); 
 fprintf(fid, 'sid sess Nfolds corr sens spec n overlap\n');
 
 sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
     1710 1886 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
     3034 3080 3149 3431 3461 3552 3883 3973 4087 4298 4320 4599 4765 4958];
+
+
 stdiz = true;
 
 for s = 1:length(sidlst)
     
-    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/G1STN/', sidlst(s));
+    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM/', sidlst(s));
     
     if ~exist(t_path)
         disp(sprintf('%s does not exist', t_path));
