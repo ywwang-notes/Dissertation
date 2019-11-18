@@ -1,5 +1,5 @@
-events = {'s11', 's12', 's21', 's22'};
-e1 = 1; e2 = 4; % which two events?
+events = {'rA', 'rB', 'rC', 'rD'};
+e1 = 2; e2 = 4; % which two events?
 v_name = 'SMC_suf_';
 Nfolds = 10;
 TestSize = 7;
@@ -15,7 +15,7 @@ stdiz = true;
 
 for s = 1:length(sidlst)
     
-    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM/', sidlst(s));
+    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM3/', sidlst(s));
     
     if ~exist(t_path)
         disp(sprintf('%s does not exist', t_path));

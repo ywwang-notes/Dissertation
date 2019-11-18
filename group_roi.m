@@ -11,27 +11,15 @@ sidlst = [0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 
     1710 1886 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
     3034 3080 3149 3431 3461 3552 3883 3973 4087 4298 4320 4599 4765 4958];
 % sidlst = [0001];
-prefix = 'VC';
+prefix = 'HC';
 
 for sbj=1:length(sidlst) % revise here
     sid = num2str(sidlst(sbj), '%04i');
     matlabbatch{1}.cfg_basicio.run_ops.runjobs.inputs{sbj}{1}.inany = {[upperdir sid '/Strc2MNI/iy_rt1_' sid '.nii']};
     matlabbatch{1}.cfg_basicio.run_ops.runjobs.inputs{sbj}{2}.inany = {[upperdir sid '/Strc2MNI/wrt1_' sid '.nii']};
     matlabbatch{1}.cfg_basicio.run_ops.runjobs.inputs{sbj}{3}.innifti = {
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/hV4_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/hV4_R.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS0_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS0_R.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS1_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS1_R.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS2_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS2_R.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS3_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS3_R.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS4_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS4_R.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS5_L.nii'
-                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/IPS5_R.nii'
+                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/HC_L.nii'
+                                                                       '/Users/yi-wenwang/Documents/Work/Analysis/atlas/HC_R.nii'
                                                                        };
     matlabbatch{1}.cfg_basicio.run_ops.runjobs.inputs{sbj}{4}.inany = {[upperdir  sid '/ROI/']};
     matlabbatch{1}.cfg_basicio.run_ops.runjobs.inputs{sbj}{5}.inany = {[upperdir sid '/Strc2MNI/rt1_' sid '.nii']};

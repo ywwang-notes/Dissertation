@@ -1,10 +1,10 @@
 % revised from new_MVPA.m
-events = {'s11', 's12', 's21', 's22'};
-e1 = 1; e2 = 4; % which two events for training?
-v1 = 3; v2 = 2; % which two events for verification?
-v_name = 'SMC_suf_';
+events = {'rA', 'rB', 'rC', 'rD'};
+e1 = 1; e2 = 3; % which two events for training?
+v1 = 2; v2 = 4; % which two events for verification?
+v_name = 'HC_suf_'; 
 TrainSize = 70;
-fid = fopen([v_name events{e1} events{e2} 'x' events{v1} events{v2} '.txt'], 'w'); 
+fid = fopen([v_name events{e1} events{e2} 'x' events{v1} events{v2} '_g.txt'], 'w'); % g stans for gaussian
 fprintf(fid, 'sid sess corr sens spec train_n test_n overlap\n');
 
 sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
@@ -17,7 +17,7 @@ stdiz = true;
 
 for s = 1:length(sidlst)
     
-    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM/', sidlst(s));
+    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM3/', sidlst(s));
     
     if ~exist(t_path)
         disp(sprintf('%s does not exist', t_path));
@@ -60,7 +60,7 @@ for s = 1:length(sidlst)
         
         svmStruct = fitcsvm(data, CorrectLabels, ...
                             'Standardize', ~stdiz, ...
-                            'KernelFunction', 'polynomial'); % basic            
+                            'KernelFunction', 'gaussian'); % 'polynomial'); % basic            
 
         % pick test data from next block: keep data for each level of equal length
         idx = 1;
