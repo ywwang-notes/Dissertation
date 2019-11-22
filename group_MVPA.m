@@ -9,13 +9,13 @@ fprintf(fid, 'sid sess Nfolds corr sens spec n overlap\n');
 sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
     1710 1886 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
     3034 3080 3149 3431 3461 3552 3883 3973 4087 4298 4320 4599 4765 4958];
-
+sidlst = [4765];
 
 stdiz = true;
 
 for s = 1:length(sidlst)
     
-    t_path = sprintf('/Users/yi-wenwang/Documents/Work/Analysis/%04i/GLM3/', sidlst(s));
+    t_path = sprintf('/mnt/Work/SystemSwitch/Analysis/%04i/GLM3/', sidlst(s));
     
     if ~exist(t_path)
         disp(sprintf('%s does not exist', t_path));
@@ -41,24 +41,19 @@ for s = 1:length(sidlst)
         end
 
         pick = [];
+        indices = [];
         for i = 1:length(n)
             temp = idx:(idx+n(i)-1); 
             if i == e1 | i == e2
                 temp = temp(randperm(length(temp)));
                 pick = [pick temp(1:min_len)];
+                indices = [indices crossvalind('Kfold', min_len, Nfolds)'];                
             end
             idx = idx + n(i);% for start of next label
         end
 
         CorrectLabels = label(pick);
         data = series(pick, :);
-                
-        indices = [];
-        for i=1:max(label)
-            if i == e1 | i == e2
-                indices = [indices crossvalind('Kfold', min_len, Nfolds)'];
-            end
-        end
         
         cp = classperf(CorrectLabels); 
         
