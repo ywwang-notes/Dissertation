@@ -1,4 +1,4 @@
-function [corr] = sbj_MVPA(Y, n, label, e1, e2, nFolds)
+function [corr, sens, spec] = sbj_MVPA(Y, n, label, e1, e2, nFolds)
 % e1, e2 % which two events for training?
 % v1, v2 % which two events for verification?
 
@@ -47,4 +47,6 @@ for i = 1:nFolds
 end
 
 corr = cp.CorrectRate;
+sens = cp.Sensitivity;
+spec = cp.Specificity;
 
