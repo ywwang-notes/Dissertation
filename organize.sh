@@ -49,19 +49,19 @@ do
 # -----
 		target=$(ls $1 | grep ^[0-9].*$folder)
 # -----
-		if [ ! -z $target ]; then
-			files=$(ls $1/$target/GLM3/ | grep HC.*mat)
-			if [ ! -z "$files" ]; then
-				cp -v $1/$target/GLM3/HC*.mat $folder/GLM
-				cp -v $1/$target/GLM3/HC*.mat $folder/GLM3
-			fi
-		fi
+#		if [ ! -z $target ]; then
+#			files=$(ls $1/$target/GLM3/ | grep HC.*mat)
+#			if [ ! -z "$files" ]; then
+#				cp -v $1/$target/GLM3/HC*.mat $folder/GLM
+#				cp -v $1/$target/GLM3/HC*.mat $folder/GLM3
+#			fi
+#		fi
 # -----
-#		if [ ! -z "$target" ] && [ -d "$1/$target/GLM3" ]; then
+#		subfolder="GLM1s10"
+#		if [ ! -z "$target" ] && [ -d "$1/$target/$subfolder" ]; then
 #		if [ ! -z "$target" ]; then
-#			cp -av "$1/$target/G1STN" $folder
+#			cp -av "$1/$target/$subfolder" $folder
 #			mkdir "$1/$target/GLM3"
-#			cp -v group_voi.m "$1/"
 #			cp -v "$folder/ROI/mask_HC.nii" "$1/$target/"
 #		fi
 # -----
