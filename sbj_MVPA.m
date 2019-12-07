@@ -1,4 +1,4 @@
-function [corr, sens, spec] = sbj_MVPA(Y, n, label, e1, e2, nFolds)
+function [cp_out] = sbj_MVPA(Y, n, label, e1, e2, nFolds, k_func)
 % e1, e2 % which two events for training?
 % v1, v2 % which two events for verification?
 
@@ -6,7 +6,7 @@ function [corr, sens, spec] = sbj_MVPA(Y, n, label, e1, e2, nFolds)
 [nT, v] = size(Y);
 
 if (v < 10)
-    corr = NaN;
+    cp_out = [NaN NaN NaN];
     return;
 end
 
@@ -41,7 +41,7 @@ for i = 1:nFolds
     test = (indices == i); train = ~test;
     svmStruct = fitcsvm(data(train,:), CorrectLabels(train), ...
         'Standardize', false, ...
-        'KernelFunction', 'gaussian'); % basic
+        'KernelFunction', k_func); % basic
     classes = predict(svmStruct, data(test,:));
     classperf(cp,classes,test);
 end
@@ -50,3 +50,4 @@ corr = cp.CorrectRate;
 sens = cp.Sensitivity;
 spec = cp.Specificity;
 
+cp_out = [corr sens spec];
