@@ -1,4 +1,4 @@
-function [corr] = sbj_xMVPA(Y, n, label, e1, e2, v1, v2)
+function [cp_out] = sbj_xMVPA(Y, n, label, e1, e2, v1, v2, k_func)
 % e1, e2 % which two events for training?
 % v1, v2 % which two events for verification?
 
@@ -6,7 +6,7 @@ function [corr] = sbj_xMVPA(Y, n, label, e1, e2, v1, v2)
 [nT, v] = size(Y);
 
 if (v < 10)
-    corr = NaN;
+    cp_out = [NaN NaN NaN];
     return;
 end
 
@@ -36,7 +36,7 @@ data = Y(pick, :);
     
 svmStruct = fitcsvm(data, CorrectLabels, ...
         'Standardize', false, ...
-        'KernelFunction', 'gaussian'); % 'polynomial'); % basic
+        'KernelFunction', k_func); % 'polynomial'); % basic
     
 % pick test data from next block: keep data for each level of equal length
 idx = 1;
@@ -61,6 +61,9 @@ TestData = Y(pick, :);
 cp = classperf(TestLabels);
 classes = predict(svmStruct, TestData);
 classperf(cp, classes);
-    
-corr = cp.CorrectRate;
 
+corr = cp.CorrectRate;
+sens = cp.Sensitivity;
+spec = cp.Specificity;
+
+cp_out = [corr sens spec];
