@@ -1,14 +1,14 @@
 clear
 
 data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
-sid = '2526';
+sid = '0003';
 mask = '/GLM3/mask.nii';
 nFolds = 5;
 radius = 5;
 k_func = 'linear';
 % events = {'s1', 's2'};
 events = {'rA', 'rB', 'rC', 'rD'};
-e1 = 3; e2 = 4; % which two events for training?
+e1 = 2; e2 = 4; % which two events for training?
 TrainSize = 60;
 
 load([sid '/GLM3/SPM.mat']);

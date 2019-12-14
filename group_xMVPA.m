@@ -2,7 +2,7 @@
 events = {'rA', 'rB', 'rC', 'rD'};
 e1 = 1; e2 = 3; % which two events for training?
 v1 = 2; v2 = 4; % which two events for verification?
-v_name = 'HC_suf_'; 
+v_name = 'V1_suf_'; 
 TrainSize = 70;
 fid = fopen([v_name events{e1} events{e2} 'x' events{v1} events{v2} '_g.txt'], 'w'); % g stans for gaussian
 fprintf(fid, 'sid sess corr sens spec train_n test_n overlap\n');
