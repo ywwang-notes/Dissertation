@@ -13,8 +13,8 @@ sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 ...
     1000 1061 1091 1205 1676 1697 1710 1886 1993 ...
     2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 ...
     3008 3034 3080 3149 3431 3461 3552 3883 3973 ...
-    4087 4289 4298 4320 4599 4765 4958];
-prefix = 'wsvm';
+    4087 4298 4320 4599 4765 4958];
+prefix = 'wsvm1211'; % record the date (mmdd)
 contents = dir('SVM');
 n = length(contents);
 n_batch = 0;
@@ -28,7 +28,9 @@ for sbj=1:length(sidlst) % revise here
     filelist = {};
     for i = 1:n
         if ~isempty(strfind(contents(i).name, sid))
-            filelist{end+1,1} = ['SVM/' contents(i).name ',1'];
+            if ~exist(['SVM/normalise/wr' contents(i).name], 'file')
+                filelist{end+1,1} = ['SVM/' contents(i).name ',1'];
+            end
         end
     end
     
