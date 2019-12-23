@@ -1,15 +1,16 @@
 clear
 data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
 sid = '2526';
-mask = '/GLM1s10/mask.nii';
+mask = '/GLM3/mask.nii';
 nFolds = 5;
-radius = 10;
+radius = 5;
 k_func = 'linear';
-events = {'s11', 's12', 's21', 's22'};
-e1 = 3; e2 = 2; % which two events for training?
+% events = {'s11', 's12', 's21', 's22'};
+events = {'rA', 'rB', 'rC', 'rD'};
+e1 = 1; e2 = 2; % which two events for training?
 TrainSize = 60;
 
-load([sid '/GLM1s10/SPM.mat']);
+load([sid '/GLM3/SPM.mat']);
 
 for sess = 1:5
     disp(['session ' num2str(sess)]);
@@ -109,12 +110,12 @@ for sess = 1:5
     toc
     
     movefile('searchlight_0001.nii', ...
-        sprintf('corr_p_%s_b%i_%s%s_%imm_rnd_%s.nii', ...
+        sprintf('corr_p_%s_b%i_%s%s_%imm_%s_rnd.nii', ...
         sid, sess, events{e1}, events{e2}, radius, k_func));
     movefile('searchlight_0002.nii', ...
-        sprintf('sens_p_%s_b%i_%s%s_%imm_rnd_%s.nii', ...
+        sprintf('sens_p_%s_b%i_%s%s_%imm_%s_rnd.nii', ...
         sid, sess, events{e1}, events{e2}, radius, k_func));
     movefile('searchlight_0003.nii', ...
-        sprintf('spec_p_%s_b%i_%s%s_%imm_rnd_%s.nii', ...
+        sprintf('spec_p_%s_b%i_%s%s_%imm_%s_rnd.nii', ...
         sid, sess, events{e1}, events{e2}, radius, k_func));
 end % sess

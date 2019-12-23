@@ -33,9 +33,12 @@ do
 #		echo $folder
 
 # for zipping files and clean up
-#                zip $folder/GLM/rbeta_$folder $folder/GLM/rbeta*.nii
-#		rm $folder/GLM/rbeta*.nii
-		
+		target="$folder/GLM2M"
+		if [ -d $target ]; then
+                	zip -v $target/rbeta_$folder $target/rbeta*.nii
+			rm $target/rbeta*.nii
+#			ls $target/rbeta*.nii
+		fi		
 # for creating subfolder 
 #		cd $folder
 #		mkdir ROI
@@ -57,13 +60,13 @@ do
 #			fi
 #		fi
 # -----
-		subfolder="GLM1s10"
-		if [ ! -z "$target" ] && [ -d "$1/$target/$subfolder" ]; then
+#		subfolder="GLM1s10"
+#		if [ ! -z "$target" ] && [ -d "$1/$target/$subfolder" ]; then
 #		if [ ! -z "$target" ]; then
 #			cp -av "$1/$target/$subfolder" $folder
 #			mkdir "$1/$target/GLM3"
 #			cp -v "$folder/ROI/mask_HC.nii" "$1/$target/"
-		fi
+#		fi
 # -----
 #		if [ -d "$folder/GLM1_STN" ]; then
 #			mv $folder/GLM1_STN $folder/G1STN
