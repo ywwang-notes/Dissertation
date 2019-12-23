@@ -1,6 +1,8 @@
 function [cp_out] = sbj_xMVPA(Y, n, label, e1, e2, v1, v2, k_func)
 % e1, e2 % which two events for training?
 % v1, v2 % which two events for verification?
+% k_func: 'linear' or 'guassian'
+
 
 % standardize data to L2 norm when load_ev_series
 [nT, v] = size(Y);
@@ -36,7 +38,7 @@ data = Y(pick, :);
     
 svmStruct = fitcsvm(data, CorrectLabels, ...
         'Standardize', false, ...
-        'KernelFunction', k_func); % 'polynomial'); % basic
+        'KernelFunction', k_func); 
     
 % pick test data from next block: keep data for each level of equal length
 idx = 1;
@@ -61,9 +63,10 @@ TestData = Y(pick, :);
 cp = classperf(TestLabels);
 classes = predict(svmStruct, TestData);
 classperf(cp, classes);
-
+    
 corr = cp.CorrectRate;
 sens = cp.Sensitivity;
 spec = cp.Specificity;
 
 cp_out = [corr sens spec];
+
