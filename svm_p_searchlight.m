@@ -1,17 +1,18 @@
 clear
 
-data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
-sid = '0003';
-mask = '/GLM3/mask.nii';
+data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
+sid = '0239';
+target = 'GLM1s10';
 nFolds = 5;
-radius = 5;
+radius = 5; % 5mm
 k_func = 'linear';
-% events = {'s1', 's2'};
-events = {'rA', 'rB', 'rC', 'rD'};
-e1 = 2; e2 = 4; % which two events for training?
+% events = {'rA', 'rB', 'rC', 'rD'};
+events = {'s11', 's12', 's21', 's22'};
+e1 = 3; e2 = 2; % which two events for training?
 TrainSize = 60;
 
-load([sid '/GLM3/SPM.mat']);
+mask = sprintf('/%s/mask.nii', target);
+load(sprintf('%s/%s/SPM.mat', sid, target));
 
 for sess = 1:5
     disp(['session ' num2str(sess)]);
@@ -31,8 +32,7 @@ for sess = 1:5
         peak = [peak max(series{i})];
     end
     
-    th = min(peak) * 0.6; % this is the original version
-    % th = min(peak) * 0.5; % this is the debug version
+    th = min(peak) * 0.6;
     TRs = {};
     
     for i=1:c
@@ -41,7 +41,6 @@ for sess = 1:5
     
     % remove overlaps; pair-wise comparisons
     pairs = [1 2; 1 3; 1 4; 2 3; 2 4; 3 4];
-    % pairs = [1 2];
     [r, c] = size(pairs);
     overlap = 0;
     
@@ -79,6 +78,7 @@ for sess = 1:5
     end
     
     % === searchlight ===
+    % [r, c] = size(SPM.xY.P);
     Scans.xY.VY = '';
     Scans.VM = [sid mask];
     
@@ -87,12 +87,13 @@ for sess = 1:5
     for iTRs = 1:length(TRs)
         for t = 1:length(TRs{iTRs}) % revise path
             tr = TRs{iTRs}(t) + start_TR - 1;
-%           pt = strfind(SPM.xY.P(tr, :), sid);
-            Scans.xY.VY(i,:) = SPM.xY.P(tr, :);
+            pt = strfind(SPM.xY.P(tr, :), sid);
+            Scans.xY.VY(i,:) = [data_path SPM.xY.P(tr, pt:end-2)];
             i = i + 1;
         end
     end
     
+    % SPM.xY.VY = SPM.xY.VY(start_TR:end_TR,1);
     test_func = @(Y,XYZ, n, label, e1, e2, nFolds, k_func) sbj_MVPA(Y, n, label, e1, e2, nFolds, k_func);
     searchopt = struct('def','sphere','spec', radius);
     spm_searchlight(Scans,searchopt, test_func, n, label, e1, e2, nFolds, k_func);
@@ -107,4 +108,5 @@ for sess = 1:5
     movefile('searchlight_0003.nii', ...
         sprintf('spec_p_%s_b%i_%s%s_%imm_%s.nii', ...
         sid, sess, events{e1}, events{e2}, radius, k_func));
+
 end % sess

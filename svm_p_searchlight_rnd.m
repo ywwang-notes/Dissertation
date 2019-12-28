@@ -1,18 +1,20 @@
 clear
-data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
-sid = '2526';
-mask = '/GLM3/mask.nii';
+
+data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
+sid = '2055';
+target = 'GLM3';
 nFolds = 5;
-radius = 5;
+radius = 5; % 5mm
 k_func = 'linear';
-% events = {'s11', 's12', 's21', 's22'};
 events = {'rA', 'rB', 'rC', 'rD'};
+% events = {'s11', 's12', 's21', 's22'};
 e1 = 1; e2 = 2; % which two events for training?
 TrainSize = 60;
 
-load([sid '/GLM3/SPM.mat']);
+mask = sprintf('/%s/mask.nii', target);
+load(sprintf('%s/%s/SPM.mat', sid, target));
 
-for sess = 1:5
+for sess = 2:5 % for the rest of the night 12/18
     disp(['session ' num2str(sess)]);
     % === pick TRs ===
     tic
@@ -85,12 +87,12 @@ for sess = 1:5
     for iTRs = 1:length(TRs)
         for t = 1:length(TRs{iTRs}) % revise path
             tr = TRs{iTRs}(t) + start_TR - 1;
-%           pt = strfind(SPM.xY.P(tr, :), sid);
-            Scans.xY.VY(i,:) = SPM.xY.P(tr, :);
+            pt = strfind(SPM.xY.P(tr, :), sid);
+            Scans.xY.VY(i,:) = [data_path SPM.xY.P(tr, pt:end-2)];
             i = i + 1;
         end
     end
-
+    
     e1_list = find(label == e1);
     e2_list = find(label == e2);
     
@@ -118,4 +120,5 @@ for sess = 1:5
     movefile('searchlight_0003.nii', ...
         sprintf('spec_p_%s_b%i_%s%s_%imm_%s_rnd.nii', ...
         sid, sess, events{e1}, events{e2}, radius, k_func));
+
 end % sess

@@ -1,19 +1,21 @@
 % under development
+
 clear
-data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
-sid = '2526';
+tic
+data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
+sid = '0001';
 radius = 5;
 mask = '/GLM1s10/mask.nii';
 events = {'s11', 's12', 's21', 's22'};
 e1 = 1; e2 = 4; % which two events for training?
 v1 = 3; v2 = 2; % which two events for verification?
 TrainSize = 70;
+k_func = 'linear';
 
 load([sid '/GLM1s10/SPM.mat']);
 
 % === pick TRs ===
-for sess=2:2
-    tic
+for sess=1:5
     start_TR = sum(SPM.nscan(1:(sess-1))) + 1;
     end_TR = sum(SPM.nscan(1:sess));
     
@@ -83,13 +85,12 @@ for sess=2:2
     for iTRs = 1:length(TRs)
         for t = 1:length(TRs{iTRs}) % revise path
             tr = TRs{iTRs}(t) + start_TR - 1;
-            %        pt = strfind(SPM.xY.P(tr, :), sid);
-            Scans.xY.VY(i,:) = SPM.xY.P(tr, :);
+            pt = strfind(SPM.xY.P(tr, :), sid);
+            Scans.xY.VY(i,:) = [data_path SPM.xY.P(tr, pt:end-2)];
             i = i + 1;
         end
     end
-    
-    % randperm label for v1 and v2
+
     v1_list = find(label == v1);
     v2_list = find(label == v2);
     
@@ -102,11 +103,11 @@ for sess=2:2
     temp = [v1*ones(1, temp_n) v2*ones(1, n(v2) - temp_n)];
     temp = temp(randperm(length(temp)));
     label(v2_list) = temp;   
-    
+
     % SPM.xY.VY = SPM.xY.VY(start_TR:end_TR,1);
-    test_func = @(Y,XYZ, n, label, e1, e2, v1, v2) sbj_xMVPA(Y, n, label, e1, e2, v1, v2);
-    searchopt = struct('def','sphere','spec',radius);
-    spm_searchlight(Scans,searchopt, test_func, n, label, e1, e2, v1, v2);
+    test_func = @(Y,XYZ, n, label, e1, e2, v1, v2, k_func) sbj_xMVPA(Y, n, label, e1, e2, v1, v2, k_func);
+    searchopt = struct('def','sphere','spec', radius);
+    spm_searchlight(Scans,searchopt, test_func, n, label, e1, e2, v1, v2, k_func);
     toc
     
     movefile('searchlight_0001.nii', ...
@@ -118,5 +119,4 @@ for sess=2:2
     movefile('searchlight_0003.nii', ...
         sprintf('spec_%s_b%i_%s%sxrnd_%imm.nii', ...
         sid, sess, events{e1}, events{e2}, radius));
-
 end

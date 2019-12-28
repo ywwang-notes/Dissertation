@@ -1,16 +1,18 @@
 % under development
-clear
-data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
-sid = '0003';
+clear all
+data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
+sid = '0001';
+target = 'GLM2M';
 radius = 5;
 k_func = 'linear';
-mask = '/GLM1s10/mask.nii';
-events = {'s11', 's12', 's21', 's22'};
-e1 = 1; e2 = 4; % which two events for training?
-v1 = 3; v2 = 2; % which two events for verification?
+% events = {'s11', 's12', 's21', 's22'};
+events = {'s1', 's2', 'c1', 'c2'};
+e1 = 1; e2 = 2; % which two events for training?
+v1 = 3; v2 = 4; % which two events for verification?
 TrainSize = 60;
 
-load([sid '/GLM1s10/SPM.mat']);
+mask = sprintf('/%s/mask.nii', target);
+load(sprintf('%s/%s/SPM.mat', sid, target));
 
 % === pick TRs ===
 for sess=1:5
@@ -68,11 +70,19 @@ for sess=1:5
     
     % be sure that each label have equal amount asigned to runs
     if min_len < TrainSize
-        disp(sprintf('block %i of subject %s skipped: length = %i', sess, sid, min_len));
+        disp(sprintf('block %i of subject %s skipped: training set = %i', sess, sid, min_len));
         continue; % not enough data; skip this block
-    else
-        disp(sprintf('block %i of subject %s MVPA', sess, sid));
     end
+    
+    % also check test TRs
+    min_len = min(n([v1 v2]));
+    
+    % be sure that each label have equal amount asigned to runs
+    if min_len < 10
+        disp(sprintf('block %i of subject %s skipped: no cue = %i', sess, sid, min_len));
+        continue; % not enough data; skip this block
+    end
+    disp(sprintf('block %i of subject %s MVPA', sess, sid));
     
     % === searchlight ===
     % [r, c] = size(SPM.xY.P);
@@ -84,8 +94,8 @@ for sess=1:5
     for iTRs = 1:length(TRs)
         for t = 1:length(TRs{iTRs}) % revise path
             tr = TRs{iTRs}(t) + start_TR - 1;
-            %        pt = strfind(SPM.xY.P(tr, :), sid);
-            Scans.xY.VY(i,:) = SPM.xY.P(tr, :);
+            pt = strfind(SPM.xY.P(tr, :), sid);
+            Scans.xY.VY(i,:) = [data_path SPM.xY.P(tr, pt:end-2)];
             i = i + 1;
         end
     end
