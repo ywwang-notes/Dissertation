@@ -23,7 +23,7 @@ train_len = min_len;
 pick = [];
 indices = [];
 
-subindices = kron(1:nFolds, ones(1, min_len/nFolds));
+subindices = kron(1:nFolds, ones(1, floor(min_len/nFolds)));
 if length(subindices) < min_len
     subindices(end+1:min_len) = nFolds;
 end
