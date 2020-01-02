@@ -2,15 +2,16 @@
 clear all
 
 data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
-sid = '0239';
+sid = '0002';
 target = 'GLM1s10';
-nFolds = 5;
+nFolds = 3;
 radius = 5; % 5mm
 k_func = 'linear';
 % events = {'rA', 'rB', 'rC', 'rD'};
 events = {'s11', 's12', 's21', 's22'};
 e1 = 1; e2 = 4; % which two events for training?
-TrainSize = 60;
+TrainSize = 30;
+th_ratio = 0.7;
 
 mask = sprintf('/%s/mask.nii', target);
 load(sprintf('%s/%s/SPM.mat', sid, target));
@@ -33,7 +34,7 @@ for sess = 1:5
         peak = [peak max(series{i})];
     end
     
-    th = min(peak) * 0.6;
+    th = min(peak) * th_ratio;
     TRs = {};
     
     for i=1:c
@@ -101,13 +102,13 @@ for sess = 1:5
     toc
     
     movefile('searchlight_0001.nii', ...
-        sprintf('corr_pc_%s_b%i_%s%s_%imm_%s.nii', ...
-        sid, sess, events{e1}, events{e2}, radius, k_func));
+        sprintf('corr_f%i_%i_%s_b%i_%s%s_%imm_%s.nii', ...
+        nFolds, th_ratio*10, sid, sess, events{e1}, events{e2}, radius, k_func));
     movefile('searchlight_0002.nii', ...
-        sprintf('sens_pc_%s_b%i_%s%s_%imm_%s.nii', ...
-        sid, sess, events{e1}, events{e2}, radius, k_func));
+        sprintf('sens_f%i_%i_%s_b%i_%s%s_%imm_%s.nii', ...
+        nFolds, th_ratio*10, sid, sess, events{e1}, events{e2}, radius, k_func));
     movefile('searchlight_0003.nii', ...
-        sprintf('spec_pc_%s_b%i_%s%s_%imm_%s.nii', ...
-        sid, sess, events{e1}, events{e2}, radius, k_func));
+        sprintf('spec_f%i_%i_%s_b%i_%s%s_%imm_%s.nii', ...
+        nFolds, th_ratio*10, sid, sess, events{e1}, events{e2}, radius, k_func));
 
 end % sess

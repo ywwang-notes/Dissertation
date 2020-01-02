@@ -16,7 +16,9 @@ sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 ...
     3008 3034 3080 3149 3431 3461 3552 3883 3973 ...
     4087 4298 4320 4599 4765 4958];
 
-contents = dir('SVM');
+sidlst = [1091 2526];
+orgpath = '../backup/corr_p/';
+contents = dir([orgpath 'corr_p_*rArB_5mm_linear.nii']);
 n = length(contents);
 n_batch = 0;
 
@@ -30,7 +32,7 @@ for sbj=1:length(sidlst) % revise here
     for i = 1:n
         if ~isempty(strfind(contents(i).name, sid))
             if ~exist(['SVM/normalise/wr' contents(i).name], 'file')
-                filelist{end+1,1} = ['SVM/' contents(i).name ',1'];
+                filelist{end+1,1} = [orgpath contents(i).name ',1'];
             end
         end
     end
@@ -54,9 +56,8 @@ matlabbatch{1}.cfg_basicio.run_ops.runjobs.missing = 'skip';
 
 spm_jobman('run',matlabbatch);
 
-sidlst = w_sid;
 
-for sbj=1:length(w_sid)
-   fname = sprintf('%s_%03i.m', prefix, sbj);
-   movefile(fname, sprintf('SVM/for_debug/%s_%04i.m', prefix, w_sid(sbj)));    
-end
+% for sbj=1:length(w_sid)
+%    fname = sprintf('%s_%03i.m', prefix, sbj);
+%    movefile(fname, sprintf('SVM/for_debug/%s_%04i.m', prefix, w_sid(sbj)));    
+% end

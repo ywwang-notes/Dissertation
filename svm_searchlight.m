@@ -1,14 +1,14 @@
 % under development
 clear all
 data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
-sid = '0001';
-target = 'GLM2M';
+sid = '0239';
+target = 'GLM1s10';
 radius = 5;
 k_func = 'linear';
-% events = {'s11', 's12', 's21', 's22'};
-events = {'s1', 's2', 'c1', 'c2'};
-e1 = 1; e2 = 2; % which two events for training?
-v1 = 3; v2 = 4; % which two events for verification?
+events = {'s11', 's12', 's21', 's22'};
+% events = {'s1', 's2', 'c1', 'c2'};
+e1 = 1; e2 = 4; % which two events for training?
+v1 = 3; v2 = 2; % which two events for verification?
 TrainSize = 60;
 
 mask = sprintf('/%s/mask.nii', target);

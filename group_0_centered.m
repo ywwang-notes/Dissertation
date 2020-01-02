@@ -2,11 +2,19 @@ spm('defaults','fmri');
 spm_jobman('initcfg');
 clear matlabbatch;
 
-folder = '/mnt/Work/SystemSwitch/Analysis/';
-w_folder = 'SVM/normalise/';
-org_folder = 'SVM/';
+% folder = '/mnt/Work/SystemSwitch/Analysis/';
+folder = '/mnt/Work/SystemSwitch/backup/corr_p/';
 
-contents = dir([folder w_folder 'w*.nii']);
+% w_folder = 'SVM/normalise/';
+w_folder = '';
+
+% org_folder = 'SVM/';
+org_folder = '';
+
+% out_folder = 'wrcorr_0';
+out_folder = '';
+
+contents = dir([folder w_folder 'w*rArB_5mm_linear.nii']);
 n_batch = 0;
 
 for i=1:length(contents)
@@ -27,7 +35,7 @@ for i=1:length(contents)
     n_batch = n_batch + 1;
     matlabbatch{n_batch}.spm.util.imcalc.input = {[folder w_folder w_file ',1']};
     matlabbatch{n_batch}.spm.util.imcalc.output = newfile;
-    matlabbatch{n_batch}.spm.util.imcalc.outdir = {[folder 'SVM/wrcorr_0']};
+    matlabbatch{n_batch}.spm.util.imcalc.outdir = {[folder org_folder out_folder]};
     matlabbatch{n_batch}.spm.util.imcalc.expression = ['set_nan(i1,' num2str(th) ') - 0.5'];
     matlabbatch{n_batch}.spm.util.imcalc.var = struct('name', {}, 'value', {});
     matlabbatch{n_batch}.spm.util.imcalc.options.dmtx = 0;
