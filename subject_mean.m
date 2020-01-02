@@ -1,0 +1,100 @@
+spm('defaults','fmri');
+spm_jobman('initcfg');
+
+% set up for jobs
+clear matlabbatch;
+
+sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
+    1710 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
+    3034 3080 3149 3431 3461 3883 3973 4087 4298 4320 4599 4765 4958];
+sidlst = [1091 2526];
+% events = 's11s22';
+% events = 's21s12';
+% events = 'rArB';
+events = 'rArB';
+% events = 's21s12'; % ss
+% events = 's1s2xc';
+prefix = 'wrcorr_p_'; % wrcorr_, wrcorr_p_
+postfix = '_0'; % _0, _rnd, _rndc
+folder = '/mnt/Work/SystemSwitch/backup/corr_p/';
+
+n_batch = 0;
+logfile = [folder prefix events postfix '.txt'];
+
+processed = {};
+if exist(logfile, 'file')
+    processed = importdata(logfile); % load old log
+end
+fid = fopen(logfile,'a'); % open log file for appending
+
+for sbj=1:length(sidlst)
+    sid = num2str(sidlst(sbj), '%04i');
+    
+    count = 1;
+    filelist = {};
+    to_update = false;
+    for b=1:5
+        filename = sprintf('%s%s_b%i_%s_5mm_linear%s.nii', prefix, sid, b, events, postfix);
+        if exist([folder filename],'file')
+            if ~any(strcmp(processed, filename))
+                to_update = true;
+                fprintf(fid, [filename '\n']);
+            end
+            filelist{end+1,1} = [folder filename ',1']; % processed files should also be included for calculating the mean
+        end
+    end
+    
+    if ~to_update
+        continue;
+    end
+    
+    target = sprintf('%s%s%s_%s_5mm_linear%s.nii', folder, prefix, sid, events, postfix);
+    
+    if length(filelist) == 1
+        tmp = char(filelist(1));
+        tmp = tmp(1:end-2);
+        copyfile(tmp, target);
+        continue;
+    end
+    n_batch = n_batch + 1;
+    
+    matlabbatch{n_batch}.spm.util.imcalc.input = filelist;
+    matlabbatch{n_batch}.spm.util.imcalc.output = target;
+    matlabbatch{n_batch}.spm.util.imcalc.outdir = {folder};
+    matlabbatch{n_batch}.spm.util.imcalc.expression = 'mean(X)';
+    matlabbatch{n_batch}.spm.util.imcalc.var = struct('name', {}, 'value', {});
+    matlabbatch{n_batch}.spm.util.imcalc.options.dmtx = 1;
+    matlabbatch{n_batch}.spm.util.imcalc.options.mask = 0;
+    matlabbatch{n_batch}.spm.util.imcalc.options.interp = 1;
+    matlabbatch{n_batch}.spm.util.imcalc.options.dtype = 16;
+    
+end % end of loop thru subject folders
+
+fclose(fid);
+
+if exist('matlabbatch','var')
+    spm_jobman('run',matlabbatch);
+% create the group mean image after mean per subject created
+%     clear matlabbatch;
+%     filelist = {};
+%     for sbj=1:length(sidlst)
+%         filename = sprintf('wrcorr0_%s_%s_5L.nii.nii', sidlst(sbj), events);
+%         if exist([folder filename],'file')
+%             filelist{end+1,1} = [folder filename ',1'];
+%         end
+%     end % end of loop thru subject folders
+%     
+%     if length(filelist) > 1
+%         matlabbatch{1}.spm.util.imcalc.input = filelist;
+%         matlabbatch{1}.spm.util.imcalc.output = sprintf('%swrcorr_%s_5mm_linear.nii', folder, events);
+%         matlabbatch{1}.spm.util.imcalc.outdir = {folder};
+%         matlabbatch{1}.spm.util.imcalc.expression = 'mean(X)';
+%         matlabbatch{1}.spm.util.imcalc.var = struct('name', {}, 'value', {});
+%         matlabbatch{1}.spm.util.imcalc.options.dmtx = 1;
+%         matlabbatch{1}.spm.util.imcalc.options.mask = 0;
+%         matlabbatch{1}.spm.util.imcalc.options.interp = 1;
+%         matlabbatch{1}.spm.util.imcalc.options.dtype = 16;
+%         
+%         spm_jobman('run',matlabbatch);
+%     end
+end
