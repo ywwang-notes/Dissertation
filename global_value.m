@@ -13,7 +13,7 @@ for i=1:r
     % hist(Y2)
     % min(Y2)
     disp(fname(i,:));
-    mean_list = [nanmean(Y2) mean_list];
+    mean_list = [mean_list nanmean(Y2)];
     Y2 = Y2(~isnan(Y2));
 %    Y2 = Y2(Y2>0);
     cdfplot(Y2);

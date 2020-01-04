@@ -1,5 +1,4 @@
 % normalise images other than originals
-prefix = 'wsvm1219'; % record the date (mmdd)
 
 spm('defaults','fmri');
 spm_jobman('initcfg');
@@ -16,12 +15,15 @@ sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 ...
     3008 3034 3080 3149 3431 3461 3552 3883 3973 ...
     4087 4298 4320 4599 4765 4958];
 
-sidlst = [1091 2526];
-orgpath = '../backup/corr_p/';
-contents = dir([orgpath 'corr_p_*rArB_5mm_linear.nii']);
+% sidlst = [1091 2526];
+
+prefix = 'wrndc0104'; % record the date (mmdd)
+orgpath = 'corr_p/';
+wpath = 'corr_p/'; % 'SVM/normalise/'
+contents = dir([orgpath 'corr_p_*rArB_5mm_linear_rndc.nii']);
+
 n = length(contents);
 n_batch = 0;
-
 w_sid = [];
 
 for sbj=1:length(sidlst) % revise here
@@ -31,7 +33,7 @@ for sbj=1:length(sidlst) % revise here
     filelist = {};
     for i = 1:n
         if ~isempty(strfind(contents(i).name, sid))
-            if ~exist(['SVM/normalise/wr' contents(i).name], 'file')
+            if ~exist([wpath 'wr' contents(i).name], 'file')
                 filelist{end+1,1} = [orgpath contents(i).name ',1'];
             end
         end

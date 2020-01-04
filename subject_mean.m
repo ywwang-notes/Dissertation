@@ -7,16 +7,17 @@ clear matlabbatch;
 sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
     1710 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
     3034 3080 3149 3431 3461 3883 3973 4087 4298 4320 4599 4765 4958];
-sidlst = [1091 2526];
-% events = 's11s22';
+sidlst = [0739 1091 1205 2010 2054 2526 2764 4298 4765];
+% sidlst = [1091 2526];
+events = 's21s12';
 % events = 's21s12';
 % events = 'rArB';
-events = 'rArB';
+% events = 'rArB';
 % events = 's21s12'; % ss
 % events = 's1s2xc';
 prefix = 'wrcorr_p_'; % wrcorr_, wrcorr_p_
-postfix = '_0'; % _0, _rnd, _rndc
-folder = '/mnt/Work/SystemSwitch/backup/corr_p/';
+postfix = '_n'; % _0, _rnd, _rndc
+folder = '/mnt/Work/SystemSwitch/Analysis/corr_p/';
 
 n_batch = 0;
 logfile = [folder prefix events postfix '.txt'];
