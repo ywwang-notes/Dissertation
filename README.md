@@ -9,7 +9,7 @@
 
 * MVPA
 1. group_norm_other
-1. group_0_center __to revise__ (do not center to 0)
+1. group_set_nan (group_0_center no longer used)
 1. subject_mean
 1. group_value (check distribution)
 1. group_mean
