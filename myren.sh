@@ -2,5 +2,5 @@
 
 for f in $(ls | grep $1); do
     newname=${f/$1/$2}
-    mv $f $newname
+    mv -v $f $newname
 done

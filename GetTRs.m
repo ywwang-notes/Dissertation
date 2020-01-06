@@ -1,4 +1,4 @@
-function [TRs] = GetTRs(SPM, sess, events)
+function [TRs] = GetTRs(SPM, sess, events, th_ratio)
     start_TR = sum(SPM.nscan(1:(sess-1))) + 1;
     end_TR = sum(SPM.nscan(1:sess));
     
@@ -13,7 +13,7 @@ function [TRs] = GetTRs(SPM, sess, events)
         peak = [peak max(series{i})];
     end
     
-    th = min(peak) * 0.6;
+    th = min(peak) * th_ratio;
     TRs = {};
     
     for i=1:c

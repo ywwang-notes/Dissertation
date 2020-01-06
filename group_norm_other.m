@@ -17,10 +17,18 @@ sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 ...
 
 % sidlst = [1091 2526];
 
-prefix = 'wrndc0104'; % record the date (mmdd)
-orgpath = 'corr_p/';
-wpath = 'corr_p/'; % 'SVM/normalise/'
-contents = dir([orgpath 'corr_p_*rArB_5mm_linear_rndc.nii']);
+prefix = 'w0107'; % record the date (mmdd)
+orgpath = 'SVM/';
+wpath = 'SVM/normalise/'; % 'SVM/normalise/'
+
+% for a specific type
+% svm_type = 'pc_';
+% events = 'rCrD'; % rArB, ...
+% postfix = ''; % _rb, _rndc, ... 
+% contents = dir([orgpath 'corr_' svm_type '*' events '_5mm_linear' postfix '.nii']);
+
+% look for all unnormalised files
+contents = dir([orgpath 'corr_*.nii']);
 
 n = length(contents);
 n_batch = 0;
@@ -52,13 +60,20 @@ for sbj=1:length(sidlst) % revise here
 
 end
 
+if n_batch < 1
+    return; % no job
+end
+
 matlabbatch{1}.cfg_basicio.run_ops.runjobs.save.savejobs.outstub = prefix;
 matlabbatch{1}.cfg_basicio.run_ops.runjobs.save.savejobs.outdir = {upperdir};
 matlabbatch{1}.cfg_basicio.run_ops.runjobs.missing = 'skip';
 
 spm_jobman('run',matlabbatch);
 
-
+if ~strcmp(orgpath, wpath)
+    movefile([orgpath 'r*.nii'], wpath); 
+    movefile([orgpath 'w*'], wpath);
+end
 % for sbj=1:length(w_sid)
 %    fname = sprintf('%s_%03i.m', prefix, sbj);
 %    movefile(fname, sprintf('SVM/for_debug/%s_%04i.m', prefix, w_sid(sbj)));    

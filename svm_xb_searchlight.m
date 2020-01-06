@@ -1,16 +1,17 @@
 % under development
 clear all
 data_path = '/mnt/Work/SystemSwitch/MotionCorrected/';
-sid = '0239';
-target = 'GLM1s10';
+sid = '2167';
+target = 'GLM3';
 radius = 5;
 k_func = 'linear';
-events = {'s11', 's22', 's12', 's21'}; % must be consistent with e1 e2
+events = {'rA', 'rB', 'rC', 'rD'}; % must be consistent with e1 e2
+th_ratio = 7;
 
 % do not change the following 3 lines!!
 e1 = 1; e2 = 2; 
 v1 = 3; v2 = 4; 
-TrainSize = 60;
+TrainSize = 30;
 
 mask = sprintf('/%s/mask.nii', target);
 load(sprintf('%s/%s/SPM.mat', sid, target));
@@ -23,7 +24,7 @@ for sess=1:4
     % what's needed here: SPM, sess, events
     % output for searchlight: TRs, n, label
     
-    [TRs] = GetTRs(SPM, sess, events);
+    [TRs] = GetTRs(SPM, sess, events, th_ratio / 10);
     
     % pick data: keep data for each level of equal length
     idx = 1;
@@ -37,7 +38,7 @@ for sess=1:4
     
     disp(sprintf('block %i of subject %s MVPA', sess, sid));
     
-    [TRs2] = GetTRs(SPM, sess+1, events);
+    [TRs2] = GetTRs(SPM, sess+1, events, th_ratio /10);
     TRs{v1} = TRs2{e1};
     TRs{v2} = TRs2{e2};
     
@@ -77,13 +78,13 @@ for sess=1:4
     toc
     
     movefile('searchlight_0001.nii', ...
-        sprintf('corr_%s_b%i_%s%sxb_%imm_%s.nii', ...
-        sid, sess, events{e1}, events{e2}, radius, k_func));
+        sprintf('corr_%i_%s_b%i_%s%sxb_%imm_%s.nii', ...
+        th_ratio, sid, sess, events{e1}, events{e2}, radius, k_func));
     movefile('searchlight_0002.nii', ...
-        sprintf('sens_%s_b%i_%s%sxb_%imm_%s.nii', ...
-        sid, sess, events{e1}, events{e2}, radius, k_func));
+        sprintf('sens_%i_%s_b%i_%s%sxb_%imm_%s.nii', ...
+        th_ratio, sid, sess, events{e1}, events{e2}, radius, k_func));
     movefile('searchlight_0003.nii', ...
-        sprintf('spec_%s_b%i_%s%sxb_%imm_%s.nii', ...
-        sid, sess, events{e1}, events{e2}, radius, k_func));
+        sprintf('spec_%i_%s_b%i_%s%sxb_%imm_%s.nii', ...
+        th_ratio, sid, sess, events{e1}, events{e2}, radius, k_func));
 
 end

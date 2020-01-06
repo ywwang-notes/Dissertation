@@ -24,4 +24,6 @@ for i=1:r
 %     end
 %     Old = Y2;
 end
+
 mean(mean_list)
+sum(mean_list > 0.52)
