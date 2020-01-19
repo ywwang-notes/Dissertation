@@ -1,0 +1,18 @@
+Thresholding by empirical CDF
+
+It is often suggested that MVPA should use permutation test, which requires thoudsands of simulation and is very expensive. An alternative is to use the traditional t-test, which might be less powerful in distinguishing false positives and hits (see simulation below). Here I propose to use the thresholding method.
+
+r_c-map preparation
+1. Empirical data: do SVM and create r_c-maps for each subjects, where r stands for classification rates. (15 r_c-maps in condition 1 and 16 r_c-maps in condition 2 for each type of classification)
+2. Create the mean r_c-maps for reach comparison.
+3. Create "random r_c-maps" by randomly re-assigned labels to events and conduct the same procedure. 
+
+Validation
+1. The logic: for empirical r_c-maps, expect to detect visual activity in primary visual cortex for classifying trial types of s11 and s22, and detect motor activity in primary motor cortex for classifying rA and rB, as well as rC and rD. (sxy means previous trial is category set 1, and current trial is category set 2; rX means the response is pressing "X"); for random r_c-maps, expect to find nothing.
+2. Results of t-test
+3. Results of thresholding: build the CDF of whole brain r_c values from the mean random r_c-map and take r_c = x as the threshold such that P(r_c > x) < 0.0001.
+
+Discussion
+Traditional whole brain t-map is created by conducting t-test to each voxel. With only less than 20 data points, un-corrected results contain lots of false positives, whereas FWE-corrected results fail to detect positives. On the other hand, the thresholding method successfully detects visual and motor responses in visual cortex and motor cortex, respectively. 
+Assuming that real r_c is at chance (0.5) for each voxel, thresholding seems to be more powerful for detecting hits while avoiding false positives. With t-test by voxel, the standard deviation is estimated using much less data points (< 20 in this case), which is less sensitive to false positives. (Empirically, a voxel at [28 25 46] with p < 0.0001 in t-test has p=0.0005 in thresholding method. Many more false-positive voxels are excluded just by setting p=0.0001 in thresholding method.)
+The thresholding method requires only one random simulation per subject, which greatly reduces the computation cost.
