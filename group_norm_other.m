@@ -16,9 +16,8 @@ sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 ...
     4087 4298 4320 4599 4765 4958];
 
 % sidlst = [3461]; % mask issue, EV.mat issue
-% sidlst = [1091 2526];
 
-prefix = 'w0110'; % record the date (mmdd)
+prefix = 'w0119'; % record the date (mmdd)
 orgpath = 'SVM/';
 wpath = 'SVM/normalise/'; % 'SVM/normalise/'
 
