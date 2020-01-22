@@ -1,4 +1,4 @@
-clear all;
+% clear all;
 spm('defaults','fmri');
 spm_jobman('initcfg');
 
