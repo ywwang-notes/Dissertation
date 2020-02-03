@@ -11,7 +11,9 @@ sidlst = [2764 2526 0739 2167 0893 3034 1091 2054 0679 2010 ...
     4599 2372 3008 3080 4320 0004 4298 1205 3883];
 
 folder = '/mnt/Work/SystemSwitch/Analysis/';
-events = {'s11', 's12', 's21', 's22', 'c11', 'c12', 'c21', 'c22', 'x', 'o'};
+% events = {'s11', 's12', 's21', 's22', 'c11', 'c12', 'c21', 'c22', 'x', 'o'};
+events = {'c1', 'c2', 'rA', 'rB', 'rC', 'rD', 'rN'};
+events = {'c'};
 
 for ev = events
     for sbj = sidlst
@@ -19,7 +21,7 @@ for ev = events
         
         for b=1:5
             
-            filename = sprintf('%s%04i/GLM1s10/s%04ib%i%s.nii', folder, sbj, sbj, b, ev{1});
+            filename = sprintf('%s%04i/GLM3/s%04ib%i%s.nii', folder, sbj, sbj, b, ev{1});
             
             if exist(filename,'file')
                 filelist{end+1,1} = [filename ',1'];
