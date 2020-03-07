@@ -7,13 +7,15 @@ clear matlabbatch;
 sidlst = [0001 0002 0003 0004 0567 0679 0739 0844 0893 1000 1061 1091 1205 1676 1697 ...
     1710 1993 2010 2054 2055 2099 2167 2187 2372 2526 2764 2809 3008 ...
     3034 3080 3149 3431 3461 3883 3973 4087 4298 4320 4599 4765 4958];
-events = 's11s22';
+sidlst = [2526];
+events = 's1s2xc1c2';
 % events = 's21s12';
 % events = 'rArB';
 % events = 'rCrD';
 
 n_batch = 0;
-folder = 'C:/Users/ywwang/Documents/dissertation/MVPA/wrcorr_0/';
+% folder = 'C:/Users/ywwang/Documents/dissertation/MVPA/wrcorr_0/';
+folder = '';
 logfile = [folder 'mean_' events '.txt'];
 processed = {};
 if exist(logfile, 'file')
@@ -28,7 +30,8 @@ for sbj=1:length(sidlst)
     filelist = {};
     to_update = false;
     for b=1:5
-        filename = sprintf('wrcorr_p_%s_b%i_%s_5mm_linear_0.nii', sid, b, events);
+%        filename = sprintf('wrcorr_p_%s_b%i_%s_5mm_linear_0.nii', sid, b, events);
+        filename = sprintf('corr_%s_b%i_%s_5mm_linear.nii', sid, b, events);
         if exist([folder filename],'file')
             if ~any(strcmp(processed, filename))
                 to_update = true;
@@ -42,7 +45,7 @@ for sbj=1:length(sidlst)
         continue;
     end
     
-    target = sprintf('%swrcorr0_%s_%s_5L.nii', folder, sid, events);
+    target = sprintf('%scorr0_%s_%s_5L.nii', folder, sid, events);
     
     if length(filelist) == 1
         tmp = char(filelist(1));

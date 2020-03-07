@@ -1,16 +1,16 @@
 % under development
 clear
 data_path = '/Users/yi-wenwang/Documents/Work/MotionCorrected/';
-sid = '0003';
+sid = '2526';
 radius = 5;
 k_func = 'linear';
-mask = '/GLM1s10/mask.nii';
-events = {'s11', 's12', 's21', 's22'};
-e1 = 1; e2 = 4; % which two events for training?
-v1 = 3; v2 = 2; % which two events for verification?
+mask = '/GLM2M/mask.nii';
+events = {'s1', 's2', 'c1', 'c2'};
+e1 = 1; e2 = 2; % which two events for training?
+v1 = 3; v2 = 4; % which two events for verification?
 TrainSize = 60;
 
-load([sid '/GLM1s10/SPM.mat']);
+load([sid '/GLM2M/SPM.mat']);
 
 % === pick TRs ===
 for sess=1:5
