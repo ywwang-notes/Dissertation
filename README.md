@@ -9,6 +9,12 @@
 1. 2nd level GLM: `GLM/group_1T.m`
 1. Warp atlas to individual mean image (`group_roi`, `inv_normalise`), MVPA
 
+* query labels for SPM results
+1. save table as a variable (e.g. test)
+1. test.labels = query_label(test);
+1. writetable(test);
+
+
 * MVPA
 1. group_norm_other
 1. group_set_nan (followed by group_0_center for one-sample t-test)
