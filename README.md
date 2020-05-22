@@ -12,7 +12,10 @@
 * query labels for SPM results
 1. save table as a variable
    1. right click on table and export to csv
-   1. when csv fails: export to excel and save as csv, then double click on the csv file in Matlab
+   1. when csv fails: 
+      1. export to excel and rename x, y, zmm
+      1. save as csv
+      1. double click on the csv file in Matlab
    1. import data
    1. rename variable (e.g. test)
 1. test.labels = query_label(test);
