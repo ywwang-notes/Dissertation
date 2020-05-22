@@ -10,7 +10,10 @@
 1. Warp atlas to individual mean image (`group_roi`, `inv_normalise`), MVPA
 
 * query labels for SPM results
-1. save table as a variable (e.g. test)
+1. save table as a variable
+1.1. right click on table and export to csv
+1.1. import data
+1.1. rename variable (e.g. test)
 1. test.labels = query_label(test);
 1. writetable(test);
 
