@@ -2,6 +2,6 @@
 # whitespace is OK
 
 for f in *"$1"*; do
-    newname=${f/$1/$2}
+    newname=${f/"$1"/"$2"}
     mv -v $f $newname
 done
